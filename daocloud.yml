@@ -1,0 +1,17 @@
+image: daocloud/ci-python:3.4
+
+services:
+    - mysql
+
+env:
+    - DEBUG = "True"
+
+install:
+  - pip install -r requirements.txt
+
+before_script:
+  - python manage.py makemigrations
+  - python manage.py migrate
+
+script:
+  - python manage.py test
