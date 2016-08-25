@@ -7,14 +7,14 @@ from utils.constants import HTTPMethod, ProcessType
 
 
 class FetcherService(object):
-    method = 'GET'
+    method = HTTPMethod.GET
     headers = {}
     cookies = {}
     timeout = 120
     connect_timeout = 20
 
     @classmethod
-    def packed_task(cls, task):
+    def init_task(cls, task):
         return {
             'proj_id': task.get('proj_id'),
             'task_id': task.get('task_id'),
@@ -30,7 +30,7 @@ class FetcherService(object):
         }
 
     @classmethod
-    def packed_response(cls, task, request):
+    def packed_task(cls, task, request):
         return {
             'proj_id': task['proj_id'],
             'task_id': task['task_id'],
@@ -44,19 +44,18 @@ class FetcherService(object):
 
     @classmethod
     def fetch(cls, task):
-        task = cls.packed_task(task)
+        task = cls.init_task(task)
         if task['method'] == HTTPMethod.GET:
             return cls.fetch_get(task)
         elif task['method'] == HTTPMethod.POST:
-            req = requests.post(task['url'])
-            return {}
+            return cls.fetch_post(task)
 
     @classmethod
     def fetch_get(cls, task):
         req = requests.get(task['url'], params=task['payload'], headers=task['headers'])
-        return cls.packed_response(task, req)
+        return cls.packed_task(task, req)
 
     @classmethod
     def fetch_post(cls, task):
         req = requests.post(task['url'], data=task['payload'], headers=task['headers'])
-        return cls.packed_response(task, req)
+        return cls.packed_task(task, req)
