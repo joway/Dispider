@@ -20,10 +20,6 @@ class SchedulerService(object):
         return 'xxx'
 
     @classmethod
-    def scheduling_proj(cls):
-        pass
-
-    @classmethod
     def scheduling_task(cls):
         pass
 

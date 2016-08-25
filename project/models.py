@@ -15,7 +15,10 @@ class Project(models.Model):
     http_method = models.IntegerField('HTTP方法', choices=HTTP_METHOD_CHOICES,
                                       default=HTTPMethod.GET)
 
-    valid_url_regexp = models.CharField('合法链接符合正则', max_length=56)
+    headers = models.TextField('HTTP Headers')
+    cookies = models.TextField('Cookies')
+
+    valid_url_regexp = models.CharField('合法链接符合正则', max_length=56, default='')
     rules = models.TextField('内容提取映射规则')
 
     created_at = models.DateTimeField('创建于', auto_now_add=True)

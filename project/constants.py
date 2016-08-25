@@ -8,13 +8,6 @@ class ProjectStatus(object):
     FAILED = 4
 
 
-class TaskStatus(object):
-    RUNNING = 1
-    RESTARTING = 2
-    FINISHED = 3
-    FAILED = 4
-
-
 PROCESS_TYPE_CHOICES = (
     (ProcessType.CSS_SELECT, 'CSS选择器'),
     (ProcessType.XPATH, 'CSS'),
