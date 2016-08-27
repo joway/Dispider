@@ -1,30 +1,11 @@
 import json
-import threading
 
-import requests
 from bs4 import BeautifulSoup
 from lxml import etree
+from lxml.etree import LxmlSyntaxError
 
-from config.settings import SCHEDULER_CALLBACK_API
-from spider.pipeline.tasks import pipeline
 from utils.constants import ProcessType
-from utils.exceptions import CallbackException
 from utils.helpers import extract_valid_links
-
-
-def callback(proj_id, inter_links, retry=True):
-    try:
-        req = requests.post(url=SCHEDULER_CALLBACK_API, data={
-            'proj_id': proj_id,
-            'inter_links': inter_links
-        })
-        return req.json()
-    except Exception:
-        if retry:
-            return callback(proj_id, inter_links, False)
-        else:
-            # TODO: 报告回调错误
-            raise CallbackException
 
 
 class ProcessorService(object):
@@ -41,24 +22,28 @@ class ProcessorService(object):
             raise Exception
 
         mapping = handler(task['content'], task['rules'])
-        result = cls.prepare_result(task['proj_id'], task['task_id'], mapping)
 
         # 通知 scheduler 进行后续链接爬取
         valid_links = extract_valid_links(task['content'], task['valid_link_regex'])
-        t = threading.Thread(target=callback, args=(task['proj_id'], valid_links))
-        t.start()
-
+        result = cls.prepare_result(task['proj_id'], task['task_id'], mapping, valid_links)
         return result
 
     @classmethod
     def process_css_select(cls, content, rules):
-        soup = BeautifulSoup(content, 'lxml')
+        try:
+            soup = BeautifulSoup(content, 'lxml')
+        except LxmlSyntaxError:
+            #     log
+            return {}
         mapping = {}
         for rule in rules:
             try:
                 mapping[rule] = soup.select(rules[rule])[0].get_text()
             except ValueError:
                 mapping[rule] = 'Unsupported or invalid CSS selector: "%s"' % rule
+            except IndexError:
+                # 未找到内容
+                pass
         return mapping
 
     @classmethod
@@ -79,11 +64,10 @@ class ProcessorService(object):
         return mapping
 
     @classmethod
-    def prepare_result(cls, proj_id, task_id, mapping):
+    def prepare_result(cls, proj_id, task_id, mapping, valid_links=[]):
         return {
             'proj_id': proj_id,
             'task_id': task_id,
             'mapping': mapping,
+            'valid_links': valid_links,
         }
-
-

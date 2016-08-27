@@ -24,7 +24,7 @@ SECRET_KEY = 'hohg-a_*bzov)$517xcg21ze0&do9+&mn53*r5zh*v@y79f2qu'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -35,6 +35,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # local apps
+    'project',
+
+    # third part apps
+    'rest_framework',
+    'corsheaders',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -47,6 +54,12 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+CORS_ORIGIN_ALLOW_ALL = True
+# CORS_ORIGIN_WHITELIST = (
+#     'hostname.example.com'
+# )
+
 
 ROOT_URLCONF = 'config.urls'
 
@@ -98,10 +111,10 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.9/topics/i18n/
+TIME_ZONE = 'Asia/Shanghai'
+# TIME_ZONE = 'UTC'
 
-LANGUAGE_CODE = 'en-us'
-
-TIME_ZONE = 'UTC'
+LANGUAGE_CODE = 'zh-hans'
 
 USE_I18N = True
 
@@ -115,16 +128,29 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 # Custom Settings
-DOMAIN = 'localhost:8000'
-SCHEDULER_CALLBACK_API = 'http://' + DOMAIN + '/api/callback/'
+DOMAIN = 'api.joway.wang'
+SCHEDULER_CALLBACK_API = 'http://' + DOMAIN + '/callback/'
 
 # REDIS
-REDIS_HOST = 'localhost'
-REDIS_PORT = 6379
+REDIS_PASSWORD = os.environ.get('REDIS_PASSWORD', None)
+REDIS_HOST = os.environ.get('REDIS_HOST', 'localhost')
+REDIS_PORT = os.environ.get('REDIS_PORT', 6379)
+if REDIS_PASSWORD:
+    REDIS_CONN_URL = 'redis://:' + REDIS_PASSWORD + '@' + REDIS_HOST + ':' + str(REDIS_PORT)
+else:
+    REDIS_CONN_URL = 'redis://' + REDIS_HOST + ':' + str(REDIS_PORT)
 REDIS_CELERY_BROKER_DB = 0
 REDIS_CELERY_RESULT_DB = 1
 REDIS_URL_DB = 2
 
 # elastic
 ELASTIC_DEFAULT_INDEX = 'dispider'
-ELASTIC_HOSTS = ['localhost']
+ELASTIC_HOSTS = ['sh.joway.wang:19200']
+ELASTIC_PORT = 19200
+ELASTIC_AUTH_USER = 'root'
+ELASTIC_AUTH_PASSWORD = 'password'
+
+try:
+    from .local_settings import *
+except ImportError:
+    pass

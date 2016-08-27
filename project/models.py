@@ -20,10 +20,10 @@ class Project(models.Model):
     headers = models.TextField('HTTP Headers', null=True)
     cookies = models.TextField('Cookies', null=True)
 
-    valid_domain_model = models.CharField('合法域名模式', choices=VALID_DOMAIN_MODEL_CHOICES,
-                                          default=ValidDomainModels.HOSTNAME)
+    valid_domain_model = models.IntegerField('合法域名模式', choices=VALID_DOMAIN_MODEL_CHOICES,
+                                             default=ValidDomainModels.HOSTNAME)
 
-    valid_path_regex = models.CharField('合法Path正则', max_length=56, default='', null=True)
+    valid_path_regex = models.CharField('合法Path正则', max_length=56, default=r'^', null=True)
 
     rules = models.TextField('内容提取映射规则')
 

@@ -8,7 +8,7 @@ class ProjectService(object):
             'rules': project.rules,
             'payload': project.payload,
             'process_type': project.process_type,
-            'method': project.http_method,
+            'http_method': project.http_method,
             'headers': project.headers,
             'cookies': project.cookies
         }

@@ -9,23 +9,16 @@ from utils.constants import HTTPMethod
 class FetcherService(object):
     @classmethod
     def packing_task(cls, task, request):
-        return {
-            'proj_id': task['proj_id'],
-            'task_id': task['task_id'],
-            'url': task['url'],
-            'rules': task['rules'],
-            'valid_link_regex': task['valid_link_regex'],
-            'process_type': task['process_type'],
-            'content': request.text,
-            'encoding': request.encoding,
-            'status_code': request.status_code,
-        }
+        task['content'] = request.text
+        task['encoding'] = request.encoding
+        task['status_code'] = request.status_code
+        return task
 
     @classmethod
     def fetch(cls, task):
-        if task['method'] == HTTPMethod.GET:
+        if task['http_method'] == HTTPMethod.GET:
             return cls.fetch_get(task)
-        elif task['method'] == HTTPMethod.POST:
+        elif task['http_method'] == HTTPMethod.POST:
             return cls.fetch_post(task)
 
     @classmethod

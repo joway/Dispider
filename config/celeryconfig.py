@@ -1,9 +1,9 @@
 from kombu import Queue
 
-from config.settings import REDIS_HOST, REDIS_PORT
+from config.settings import REDIS_CONN_URL
 
-BROKER_URL = 'redis://' + REDIS_HOST + ':' + str(REDIS_PORT) + '/0'
-CELERY_RESULT_BACKEND = 'redis://localhost:6379/1'
+BROKER_URL = REDIS_CONN_URL + '/0'
+CELERY_RESULT_BACKEND = REDIS_CONN_URL + '/1'
 
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
@@ -18,12 +18,14 @@ CELERYD_MAX_TASKS_PER_CHILD = 100  # 每个worker执行了多少任务就会死�
 CELERYD_TASK_TIME_LIMIT = 60  # 单个任务执行限制时间
 
 CELERY_IMPORTS = (
+    "spider.scheduler.tasks",
     "spider.fetcher.tasks",
     "spider.processor.tasks",
     "spider.pipeline.tasks",
 )
 
 CELERY_QUEUES = (
+    Queue('scheduler', routing_key='scheduler'),
     Queue('fetcher', routing_key='fetcher'),
     Queue('processor', routing_key='processor'),
     Queue('pipeline', routing_key='pipeline'),
