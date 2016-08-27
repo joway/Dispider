@@ -1,12 +1,17 @@
 from rest_framework import viewsets, status
+from rest_framework.decorators import list_route
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 
-from project.serializers import ProjectCreateSerializer
-from spider.scheduler import SchedulerService
+from project.models import Project
+from project.serializers import ProjectCreateSerializer, ProjectSerializer
+from project.services import ProjectService
+from spider.scheduler.tasks import scheduling
+from utils.helpers import base62_encode
 
 
 class ProjectViewSet(viewsets.GenericViewSet):
+    queryset = Project.objects.all()
     serializer_class = ProjectCreateSerializer
     permission_classes = [AllowAny, ]
 
@@ -15,5 +20,16 @@ class ProjectViewSet(viewsets.GenericViewSet):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         data = serializer.validated_data
-        SchedulerService.scheduling_tasks(data['id'], [data['entry_url']])
+
+        proj = self.get_object()
+        sl = scheduling.delay(proj_id=base62_encode(data['id']),
+                              links=[data['entry_url']],
+                              options=ProjectService.gen_project_options(proj))
+        # send_links = sl.get()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+    @list_route(methods=['POST'])
+    def callback(self, request):
+        serializer = ProjectSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()

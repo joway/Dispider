@@ -117,3 +117,14 @@ STATIC_URL = '/static/'
 # Custom Settings
 DOMAIN = 'localhost:8000'
 SCHEDULER_CALLBACK_API = 'http://' + DOMAIN + '/api/callback/'
+
+# REDIS
+REDIS_HOST = 'localhost'
+REDIS_PORT = 6379
+REDIS_CELERY_BROKER_DB = 0
+REDIS_CELERY_RESULT_DB = 1
+REDIS_URL_DB = 2
+
+# elastic
+ELASTIC_DEFAULT_INDEX = 'dispider'
+ELASTIC_HOSTS = ['localhost']

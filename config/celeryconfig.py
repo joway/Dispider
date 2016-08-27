@@ -1,6 +1,8 @@
 from kombu import Queue
 
-BROKER_URL = 'redis://localhost:6379/0'
+from config.settings import REDIS_HOST, REDIS_PORT
+
+BROKER_URL = 'redis://' + REDIS_HOST + ':' + str(REDIS_PORT) + '/0'
 CELERY_RESULT_BACKEND = 'redis://localhost:6379/1'
 
 CELERY_TASK_SERIALIZER = 'json'

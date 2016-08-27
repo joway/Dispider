@@ -1,14 +1,14 @@
-from spider.fetcher.tasks import fetch
-from utils.helpers import url_hash
+import project
+from spider.scheduler.tasks import scheduling
+from utils.constants import ProcessType
 
 url = 'http://www.pingwest.com/'
-r = fetch.delay({
-    'proj_id': 1,
-    'task_id': url_hash(url),
-    'url': url,
+r = scheduling.delay({
+    'proj_id': 'test',
+    'links': [url],
     'options': {
         'rules': {'title': 'title'},
+        'process_type': ProcessType.CSS_SELECT,
     },
 })
-r.wait()
 print(r)

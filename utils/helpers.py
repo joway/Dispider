@@ -1,6 +1,10 @@
 import hashlib
+import re
+
+from lxml import etree
 
 from utils.exceptions import Base62Exception
+from utils.redis import redis_client
 
 basedigits = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
 BASE = len(basedigits)
@@ -29,3 +33,12 @@ def base62_encode(num: int):
         num = int(num / BASE)
     return ret
 
+
+def extract_valid_links(content, regex):
+    html = etree.HTML(content)
+    return [a.attrib['href'] for a in html.xpath('//a[@href]')
+            if re.match(regex, a.attrib['href'])]
+
+
+def remove_duplicates_links(links: []):
+    return [l for l in links if not redis_client.sismember(url_hash(l))]

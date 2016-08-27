@@ -8,6 +8,12 @@ class ProjectStatus(object):
     FAILED = 4
 
 
+class ValidDomainModels(object):
+    HOSTNAME = 1
+    EXTENSIVE = 2
+    ALL = 3
+
+
 PROCESS_TYPE_CHOICES = (
     (ProcessType.CSS_SELECT, 'CSS选择器'),
     (ProcessType.XPATH, 'CSS'),
@@ -24,4 +30,10 @@ PROJECT_STATUS_CHOICES = (
     (ProjectStatus.RUNNING, '正在运行'),
     (ProjectStatus.FINISHED, '结束'),
     (ProjectStatus.FAILED, '失败'),
+)
+
+VALID_DOMAIN_MODEL_CHOICES = (
+    (ValidDomainModels.HOSTNAME, '当前Hostname匹配'),
+    (ValidDomainModels.EXTENSIVE, '泛域名匹配'),
+    (ValidDomainModels.ALL, '通配'),
 )

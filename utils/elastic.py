@@ -1,6 +1,8 @@
 from elasticsearch import Elasticsearch
 
+from config.settings import ELASTIC_HOSTS
+
 elatic = Elasticsearch(
-    ['localhost'],
+    ELASTIC_HOSTS,
     http_auth=('user', 'secret'),
 )

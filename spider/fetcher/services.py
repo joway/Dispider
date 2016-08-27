@@ -3,39 +3,18 @@
 """
 import requests
 
-from utils.constants import HTTPMethod, ProcessType
+from utils.constants import HTTPMethod
 
 
 class FetcherService(object):
-    method = HTTPMethod.GET
-    headers = {}
-    cookies = {}
-    timeout = 120
-    connect_timeout = 20
-
     @classmethod
-    def init_task(cls, task):
-        return {
-            'proj_id': task.get('proj_id'),
-            'task_id': task.get('task_id'),
-            'url': task.get('url'),
-            'payload': task.get('payload', {}),
-            'rules': task.get('rules', {}),
-            'process_type': task.get('process_type', ProcessType.CSS_SELECT),
-            'method': task.get('method', cls.method),
-            'headers': task.get('headers', cls.headers),
-            'cookies': task.get('cookies', cls.method),
-            'timeout': task.get('timeout', cls.timeout),
-            'connect_timeout': task.get('connect_timeout', cls.connect_timeout),
-        }
-
-    @classmethod
-    def packed_task(cls, task, request):
+    def packing_task(cls, task, request):
         return {
             'proj_id': task['proj_id'],
             'task_id': task['task_id'],
             'url': task['url'],
             'rules': task['rules'],
+            'valid_link_regex': task['valid_link_regex'],
             'process_type': task['process_type'],
             'content': request.text,
             'encoding': request.encoding,
@@ -44,7 +23,6 @@ class FetcherService(object):
 
     @classmethod
     def fetch(cls, task):
-        task = cls.init_task(task)
         if task['method'] == HTTPMethod.GET:
             return cls.fetch_get(task)
         elif task['method'] == HTTPMethod.POST:
@@ -53,9 +31,9 @@ class FetcherService(object):
     @classmethod
     def fetch_get(cls, task):
         req = requests.get(task['url'], params=task['payload'], headers=task['headers'])
-        return cls.packed_task(task, req)
+        return cls.packing_task(task, req)
 
     @classmethod
     def fetch_post(cls, task):
         req = requests.post(task['url'], data=task['payload'], headers=task['headers'])
-        return cls.packed_task(task, req)
+        return cls.packing_task(task, req)

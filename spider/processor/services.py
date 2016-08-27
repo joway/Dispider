@@ -9,6 +9,7 @@ from config.settings import SCHEDULER_CALLBACK_API
 from spider.pipeline.tasks import pipeline
 from utils.constants import ProcessType
 from utils.exceptions import CallbackException
+from utils.helpers import extract_valid_links
 
 
 def callback(proj_id, inter_links, retry=True):
@@ -40,14 +41,12 @@ class ProcessorService(object):
             raise Exception
 
         mapping = handler(task['content'], task['rules'])
-
         result = cls.prepare_result(task['proj_id'], task['task_id'], mapping)
 
-        # 存储任务
-        pipeline.delay(result)
-
         # 通知 scheduler 进行后续链接爬取
-        cls.scheduler_callback(result['proj_id'], result['mapping']['inter_links'])
+        valid_links = extract_valid_links(task['content'], task['valid_link_regex'])
+        t = threading.Thread(target=callback, args=(task['proj_id'], valid_links))
+        t.start()
 
         return result
 
@@ -81,16 +80,10 @@ class ProcessorService(object):
 
     @classmethod
     def prepare_result(cls, proj_id, task_id, mapping):
-        if not mapping.get('inter_links', None):
-            mapping['inter_links'] = 'a[href]'
-
         return {
             'proj_id': proj_id,
             'task_id': task_id,
             'mapping': mapping,
         }
 
-    @classmethod
-    def scheduler_callback(cls, proj_id, inter_links):
-        t = threading.Thread(target=callback, args=(proj_id, inter_links))
-        t.start()
+
