@@ -17,12 +17,9 @@ class ProjectViewSet(viewsets.GenericViewSet):
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        serializer.save()
-        data = serializer.validated_data
-
-        proj = self.get_object()
-        sl = scheduling.delay(proj_id=base62_encode(data['id']),
-                              links=[data['entry_url']],
+        proj = serializer.save()
+        sl = scheduling.delay(proj_id=base62_encode(proj.id),
+                              links=[proj.entry_url],
                               options=ProjectService.gen_project_options(proj))
         # send_links = sl.get()
         return Response(serializer.data, status=status.HTTP_201_CREATED)

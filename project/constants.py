@@ -9,7 +9,7 @@ class ProjectStatus(object):
 
 
 class ValidDomainModels(object):
-    HOSTNAME = 1
+    FULL_DOMAIN = 1
     EXTENSIVE = 2
     ALL = 3
 
@@ -33,7 +33,7 @@ PROJECT_STATUS_CHOICES = (
 )
 
 VALID_DOMAIN_MODEL_CHOICES = (
-    (ValidDomainModels.HOSTNAME, '当前Hostname匹配'),
+    (ValidDomainModels.FULL_DOMAIN, '当前Hostname匹配'),
     (ValidDomainModels.EXTENSIVE, '泛域名匹配'),
     (ValidDomainModels.ALL, '通配'),
 )

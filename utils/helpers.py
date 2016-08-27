@@ -62,7 +62,7 @@ def init_task_options(task):
     task['payload'] = task.get('payload', {})
     task['process_type'] = task.get('process_type', ProcessType.CSS_SELECT)
     task['valid_link_regex'] = task.get('valid_link_regex',
-                                        r'^(http://)|(https://)(%s)' % get_hostname(task['url']))
+                                        r'^(http://)|(https://)(%s)' % get_full_domain(task['url']))
     task['headers'] = task.get('headers', {})
     task['cookies'] = task.get('cookies', {})
     task['is_callback'] = task.get('is_callback', False)
@@ -73,8 +73,12 @@ def get_path(url):
     return urlparse(url).path
 
 
-def get_hostname(url):
+def get_full_domain(url):
     return urlparse(url).netloc
+
+
+def get_root_domain(url):
+    return urlparse(url).hostname
 
 
 def get_scheme(url):

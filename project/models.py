@@ -1,6 +1,8 @@
 from django.db import models
 
 # Create your models here.
+from jsonfield import JSONField
+
 from project.constants import PROJECT_STATUS_CHOICES, PROCESS_TYPE_CHOICES, ProjectStatus, HTTP_METHOD_CHOICES, \
     VALID_DOMAIN_MODEL_CHOICES, ValidDomainModels
 from utils.constants import HTTPMethod, ProcessType
@@ -21,11 +23,12 @@ class Project(models.Model):
     cookies = models.TextField('Cookies', null=True)
 
     valid_domain_model = models.IntegerField('合法域名模式', choices=VALID_DOMAIN_MODEL_CHOICES,
-                                             default=ValidDomainModels.HOSTNAME)
+                                             default=ValidDomainModels.FULL_DOMAIN)
 
     valid_path_regex = models.CharField('合法Path正则', max_length=56, default=r'^', null=True)
 
-    rules = models.TextField('内容提取映射规则')
+    payload = JSONField('参数', default={})
+    rules = JSONField('内容提取映射规则', default={})
 
     created_at = models.DateTimeField('创建于', auto_now_add=True)
     last_indexed = models.DateTimeField('上一次索引', auto_now_add=True)
