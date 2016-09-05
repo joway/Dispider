@@ -16,7 +16,7 @@ services:
       - "6379:6379"
 
   elasticsearch:
-    image: elasticsearch
+    image: joway/elasticsearch
     ports:
       - "9200:9200"
       - "9300:9300"

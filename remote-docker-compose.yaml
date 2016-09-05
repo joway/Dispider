@@ -22,7 +22,7 @@ services:
       - "9300:9300"
 
   web:
-    image: daocloud.io/joway/dispider:lastest
+    image: joway/dispider:lastest
     volumes:
       - .:/code
     links:
@@ -42,7 +42,7 @@ services:
     restart: always
 
   celery:
-    image: daocloud.io/joway/dispider:lastest
+    image: joway/dispider:lastest
     command: sh -c "./scripts/celery_debug.sh"
     restart: always
 

@@ -19,10 +19,10 @@ ADD ./requirements.txt /code/requirements.txt
 RUN rm /etc/nginx/sites-enabled/default
 ADD ./.deploy/nginx.conf /etc/nginx/sites-enabled/nginx.conf
 ADD ./.deploy/supervisord.conf /etc/supervisor/conf.d/
-RUN pip install --upgrade pip \
-    pip install -r requirements.txt \
-    pip install uwsgi \
-    echo "daemon off;" >> /etc/nginx/nginx.conf
+RUN pip install --upgrade pip
+RUN pip install -r requirements.txt
+RUN pip install uwsgi
+RUN echo "daemon off;" >> /etc/nginx/nginx.conf
 
 ADD . /code
 
