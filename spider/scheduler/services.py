@@ -1,4 +1,4 @@
-from utils.helpers import url_hash, remove_duplicates_links, init_task_options
+from utils.helpers import url_hash, clean_links, init_task_options
 from utils.redis_client import redis_client
 
 
@@ -6,7 +6,7 @@ class SchedulerService(object):
     @classmethod
     def scheduling_tasks(cls, proj_id: str, links: [], options: []):
         tasks = []
-        remove_duplicates_links(proj_id, links)
+        clean_links(proj_id, links)
         for link in links:
             task = dict({
                 'proj_id': proj_id,

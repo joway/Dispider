@@ -7,9 +7,14 @@ from utils.helpers import get_full_domain, get_root_domain
 class ProjectService(object):
     @classmethod
     def gen_project_options(cls, project):
-        print(project.rules)
+        try:
+            rules = json.loads(project.rules) if isinstance(project.rules, str) else project.rules
+        except:
+            raise Exception('Illegal Rules')
         options = {
-            'rules': json.loads(repr(project.rules)) if isinstance(project.rules, str) else project.rules,
+            'catalog': project.catalog,
+            'domain': project.domain,
+            'rules': rules,
             'payload': project.payload,
             'process_type': project.process_type,
             'http_method': project.http_method,
@@ -24,4 +29,5 @@ class ProjectService(object):
             valid_domain_regex += r'([a-z0-9]+[.])%s' % get_root_domain(project.entry_url)
         elif project.valid_domain_model == ValidDomainModels.ALL:
             pass
+        options['valid_domain_regex'] = valid_domain_regex
         return options

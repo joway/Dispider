@@ -8,6 +8,23 @@ class ProjectStatus(object):
     FAILED = 4
 
 
+class WebsiteCatalog(object):
+    TECH = 'tech'
+    BLOG = 'blog'
+    TRAVEL = 'travel'
+    LITERATURE = 'literature'
+    HEALTH = 'health'
+
+
+WEBSITE_CATALOG_CHOICES = (
+    (WebsiteCatalog.TECH, '技术'),
+    (WebsiteCatalog.BLOG, '博客'),
+    (WebsiteCatalog.TRAVEL, '旅行'),
+    (WebsiteCatalog.LITERATURE, '文学'),
+    (WebsiteCatalog.HEALTH, '医疗健康'),
+)
+
+
 class ValidDomainModels(object):
     FULL_DOMAIN = 1
     EXTENSIVE = 2

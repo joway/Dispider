@@ -12,7 +12,7 @@ class ProjectOptionsSerializer(serializers.ModelSerializer):
 class ProjectCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
-        fields = ('id', 'name', 'entry_url', 'rules')
+        fields = ('proj_id', 'name', 'entry_url', 'rules', 'catalog')
 
 
 class ProjectCallbackSerializer(serializers.ModelSerializer):
@@ -24,3 +24,14 @@ class ProjectCallbackSerializer(serializers.ModelSerializer):
 class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
+
+
+class ProjectResultSerializer(serializers.Serializer):
+    def create(self, validated_data):
+        pass
+
+    def update(self, instance, validated_data):
+        pass
+
+    proj_id = serializers.CharField()
+    results = serializers.JSONField()

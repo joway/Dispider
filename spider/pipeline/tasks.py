@@ -4,6 +4,5 @@ from spider.pipeline.services import PipelineService
 
 @app.task(routing_key='pipeline')
 def pipeline(result):
-    print('test pipeline')
+    print('Saved ', result)
     PipelineService.pipeline(result)
-    return 'test pipeline'

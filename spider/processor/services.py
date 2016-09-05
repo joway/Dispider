@@ -25,7 +25,8 @@ class ProcessorService(object):
 
         # 通知 scheduler 进行后续链接爬取
         valid_links = extract_valid_links(task['content'], task['valid_link_regex'])
-        result = cls.prepare_result(task['proj_id'], task['task_id'], mapping, valid_links)
+        result = cls.prepare_result(task['proj_id'], task['catalog'], task['domain'], task['task_id'], mapping,
+                                    valid_links)
         return result
 
     @classmethod
@@ -64,9 +65,11 @@ class ProcessorService(object):
         return mapping
 
     @classmethod
-    def prepare_result(cls, proj_id, task_id, mapping, valid_links=[]):
+    def prepare_result(cls, proj_id, catalog, domain, task_id, mapping, valid_links=[]):
         return {
             'proj_id': proj_id,
+            'catalog': catalog,
+            'domain': domain,
             'task_id': task_id,
             'mapping': mapping,
             'valid_links': valid_links,

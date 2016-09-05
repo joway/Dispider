@@ -22,5 +22,3 @@ def process(task):
     elif result['valid_links']:
         # 直接分发任务
         scheduling.delay(result['proj_id'], result['valid_links'], extract_options_from_task(task))
-
-    return result

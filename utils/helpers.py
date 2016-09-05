@@ -2,7 +2,9 @@ import hashlib
 import re
 from urllib.parse import urlparse
 
+import shortuuid
 from lxml import etree
+from w3lib.url import canonicalize_url
 
 from utils.constants import HTTPMethod, ProcessType
 from utils.exceptions import Base62Exception
@@ -14,6 +16,10 @@ BASE = len(basedigits)
 
 def url_hash(url, length=8):
     return hashlib.md5(url.encode('utf-8')).hexdigest()[:length]
+
+
+def gen_uuid(length=12):
+    return shortuuid.ShortUUID().random(length=length)
 
 
 def base62_decode(s: str):
@@ -42,13 +48,19 @@ def extract_valid_links(content, regex):
             if re.match(regex, a.attrib['href'])]
 
 
-def remove_duplicates_links(proj_id, links: []):
-    return [l for l in links if not redis_client.sismember(proj_id, url_hash(l))]
+def clean_links(proj_id, links: []):
+    return [canonicalize_url(l) for l in links if not is_duplicates_link(proj_id, canonicalize_url(l))]
+
+
+def is_duplicates_link(proj_id, link):
+    return redis_client.sismember(proj_id, url_hash(link))
 
 
 def extract_options_from_task(task):
     return {
         'rules': task['rules'],
+        'catalog': task['catalog'],
+        'domain': task['domain'],
         'payload': task['payload'],
         'process_type': task['process_type'],
         'http_method': task['http_method'],

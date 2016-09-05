@@ -10,10 +10,12 @@
 #     'process_type': ProcessType.CSS_SELECT,
 # })
 # print(r)
-import json
 
-j = r'%s' % '{"title": "h1[class=\"title\"]","content": "div[id="sc-container"]"}'
-print(
-    j
-)
-print(json.loads(j.replace("\\", r"\\")))
+# j = r'%s' % '{"title": "h1[class=title]","content": "div[id=sc-container]"}'
+# print(
+#     j
+# )
+# print(json.loads(j.replace("\\", r"\\")))
+from w3lib.url import canonicalize_url
+
+print(url_normalize('https://github.com/niksite/url-normalize?key=1'))
