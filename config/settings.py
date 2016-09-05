@@ -84,12 +84,24 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
+        'NAME': os.environ.get("MYSQL_DATABASE", 'dispider'),
+        'ENGINE': 'django.db.backends.mysql',
+        'USER': os.environ.get("MYSQL_USER", 'root'),
+        'PASSWORD': os.environ.get("MYSQL_PASSWORD", ''),
+        'HOST': os.environ.get("MYSQL_HOST", 'localhost'),
+        'PORT': os.environ.get("MYSQL_PORT", 3306),
+    },
 }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators
@@ -144,9 +156,8 @@ REDIS_CELERY_RESULT_DB = 1
 REDIS_URL_DB = 2
 
 # elastic
-ELASTIC_DEFAULT_INDEX = 'dispider'
-ELASTIC_HOSTS = ['sh.joway.wang:19200']
-ELASTIC_PORT = 19200
+ELASTIC_PORT = os.environ.get('ELASTIC_PORT', '9200')
+ELASTIC_HOSTS = [os.environ.get('ELASTIC_HOSTS', 'localhost') + ELASTIC_PORT]
 ELASTIC_AUTH_USER = 'root'
 ELASTIC_AUTH_PASSWORD = 'password'
 
