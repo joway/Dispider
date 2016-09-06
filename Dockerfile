@@ -25,7 +25,7 @@ RUN pip install uwsgi
 RUN echo "daemon off;" >> /etc/nginx/nginx.conf
 
 ADD . /code
-RUN chmod +x ./scripts/*.sh
+RUN chmod +x ./**/*.sh
 
 EXPOSE 80
 EXPOSE 8000
