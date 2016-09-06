@@ -26,6 +26,8 @@ RUN echo "daemon off;" >> /etc/nginx/nginx.conf
 
 ADD . /code
 
+RUN chmod +x ./**/*.sh
+
 EXPOSE 80
 EXPOSE 8000
 CMD ["sh","./endpoint.sh"]
