@@ -29,19 +29,25 @@ services:
       - mysql
       - redis
       - elasticsearch
+    depends_on:
+      - mysql
+      - redis
+      - elasticsearch
     environment:
       REDIS_HOST: "redis"
       REDIS_PORT: "6379"
       ELASTIC_HOSTS: "elasticsearch"
       ELASTIC_PORT: "9200"
+      MYSQL_HOST: "mysql"
       MYSQL_DATABASE: "dispider"
       MYSQL_USER: "dispider"
       MYSQL_PASSWORD: "dispider"
 
   web:
     <<: *app_base
+    command: sh -c "./endpoint.sh"
     ports:
-      - "8000:8000"
+      - "80:80"
 
   celery:
     <<: *app_base

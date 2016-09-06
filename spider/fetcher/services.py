@@ -15,6 +15,10 @@ class FetcherService(object):
         return task
 
     @classmethod
+    def init_task(cls, task):
+        task['headers'] = task['headers'] if task['headers'] else {'Connection': 'close'}
+
+    @classmethod
     def fetch(cls, task):
         if task['http_method'] == HTTPMethod.GET:
             return cls.fetch_get(task)
