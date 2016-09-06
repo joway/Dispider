@@ -16,13 +16,13 @@ services:
       - "6379:6379"
 
   elasticsearch:
-    image: joway/elasticsearch
+    image: daocloud.io/joway/elasticsearch:latest
     ports:
       - "9200:9200"
       - "9300:9300"
 
   web:
-    image: joway/dispider:lastest
+    image: daocloud.io/joway/dispider:latest
     volumes:
       - .:/code
     links:
@@ -42,7 +42,7 @@ services:
     restart: always
 
   celery:
-    image: joway/dispider:lastest
+    image: daocloud.io/joway/dispider:latest
     command: sh -c "./scripts/celery_debug.sh"
     restart: always
 
