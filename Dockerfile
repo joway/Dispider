@@ -25,10 +25,9 @@ RUN pip install uwsgi
 RUN echo "daemon off;" >> /etc/nginx/nginx.conf
 
 ADD . /code
-RUN chmod +x ./**/*.sh
 
 EXPOSE 80
 EXPOSE 8000
-CMD ["./endpoint.sh"]
+CMD ["sh","./endpoint.sh"]
 
 

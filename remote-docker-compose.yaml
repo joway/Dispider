@@ -48,7 +48,7 @@ services:
 
   celery:
     image: daocloud.io/joway/dispider:latest
-    command: sh -c "./scripts/celery_debug.sh"
+    command: "sh ./scripts/celery_debug.sh"
     restart: always
     volumes:
       - .:/code
