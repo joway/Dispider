@@ -7,3 +7,4 @@ class ProcessType(object):
     CSS_SELECT = 1
     XPATH = 2
     JSON = 3
+    SITEMAP = 4

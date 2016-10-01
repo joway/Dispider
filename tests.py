@@ -1,21 +1,22 @@
-# from spider.scheduler.tasks import scheduling
-# from utils.constants import ProcessType
-#
-# url = 'http://www.pingwest.com/the-us-startup-visa-is-real-and-coming/'
-# r = scheduling.delay('pingwest', [url], {
-#     'rules': {
-#         'title': 'h1[class="title"]',
-#         'content': 'div[id="sc-container"]'
-#     },
-#     'process_type': ProcessType.CSS_SELECT,
-# })
-# print(r)
+#!/usr/bin/env python
+# -*- coding: UTF-8 -*-
+__author__ = 'tan9le'
+import jpype
 
-# j = r'%s' % '{"title": "h1[class=title]","content": "div[id=sc-container]"}'
-# print(
-#     j
-# )
-# print(json.loads(j.replace("\\", r"\\")))
-from w3lib.url import canonicalize_url
 
-print(url_normalize('https://github.com/niksite/url-normalize?key=1'))
+def main():
+    jvmPath = jpype.getDefaultJVMPath()
+    #Windows下默认读取的是注册表HKEY_LOCAL_MACHINE\SOFTWARE\JavaSoft\Java Runtime Environment下面的CurrentVersion值中的版本
+    #并且会将对应子键值下的RuntimeLib键值作为默认JVM Path
+    print(jvmPath)
+    jpype.startJVM(jvmPath)
+    #jpype.startJVM(jvmPath, "-Xms32m", "-Xmx256m", "-mx256m", "-Djava.class.path=/Users/tan9le/temp/some-lib.jar:")
+    jpype.java.lang.System.out.println( " hello world! " )
+    map = jpype.JClass("java.util.HashMap")()
+    map.put(u"测试",u"测试中文")
+    print(map.get(u"测试"))
+    jpype.shutdownJVM()
+
+
+if __name__ == '__main__':
+    main()
