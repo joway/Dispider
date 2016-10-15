@@ -3,7 +3,6 @@
 
 import re
 
-import pygal
 import requests
 
 reCOMM = r'<!--.*?-->'
@@ -94,25 +93,3 @@ class Extractor(object):
                              self.extract(self.ctexts[MID:], self.distribution[MID:])
         else:
             self.extracted = self.extract(self.ctexts, self.distribution)
-
-
-if __name__ == '__main__':
-    pass
-    # URLS = [
-    #     'http://blog.rainy.im/2015/09/02/web-content-and-main-image-extractor/',
-    #     # 'https://ruby-china.org/topics/31217',
-    #     # 'https://ruby-china.org/topics/31123',
-    #     # 'http://ent.sina.com.cn/y/2009-11-09/13572762965.shtml',
-    #     'http://www.pingwest.com/google-g-suite-wants-to-work/',
-    #     'http://news.ifeng.com/a/20160930/50051126_0.shtml',
-    #     'https://www.anotherhome.net/2717',
-    #     # 'https://www.anotherhome.net/2648',
-    # ]
-    # bar_chart = pygal.Bar()
-    # for URL in URLS:
-    #     ext = Extractor(url=URL)
-    #     print(ext)
-    #     bar_chart.add(URL[:10], ext.distribution)
-    # bar_chart.render_in_browser()
-    # ext = Extractor(content=data)
-    # print(ext)
