@@ -5,8 +5,8 @@ from . import elatic
 
 class ElasticService(object):
     @classmethod
-    def search(cls, index, doc_type, body=None, paging_size=10, paging_from=0):
-        return elatic.search(index=index, doc_type=doc_type, body=body,
+    def search(cls, query, index, doc_type=None, paging_size=10, paging_from=0):
+        return elatic.search(index=index, doc_type=doc_type, body={"query": {"match": {'title': query}}},
                              params={'size': paging_size, 'from': paging_from})
 
     @classmethod

@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     # local apps
     'project',
     'article',
+    'hackathon',
 
     # third part apps
     'rest_framework',
