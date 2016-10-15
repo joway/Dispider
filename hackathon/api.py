@@ -4,7 +4,7 @@ from utils.constants import ProcessType
 
 
 class APIService(object):
-    BASE_API = 'http://localhost:8000/'
+    BASE_API = 'http://hack.joway.wang:8000/'
 
     @classmethod
     def create_article(cls, url, title, content, keyset):

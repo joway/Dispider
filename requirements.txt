@@ -13,7 +13,6 @@ django-cors-headers==1.1.0
 djangorestframework==3.4.6
 elasticsearch==2.4.0
 jieba==0.38
-JPype1==0.6.1
 jsonfield==1.0.3
 kombu==3.0.35
 lxml==3.6.4
