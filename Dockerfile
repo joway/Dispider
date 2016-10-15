@@ -27,6 +27,7 @@ RUN echo "daemon off;" >> /etc/nginx/nginx.conf
 ADD . /code
 
 RUN chmod +x /code/**/*.sh
+RUN python manage.py collectstatic
 
 EXPOSE 80
 EXPOSE 8000
