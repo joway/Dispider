@@ -6,6 +6,6 @@ from article.models import Article
 
 
 class ArticleAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('url', 'title', 'keyset', 'created_at')
 
 admin.site.register(Article, ArticleAdmin)
