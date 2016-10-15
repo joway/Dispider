@@ -30,6 +30,6 @@ RUN chmod +x /code/**/*.sh
 
 EXPOSE 80
 EXPOSE 8000
-#CMD ["sh","./endpoint.sh"]
+CMD ["sh","./endpoint.sh"]
 
 
