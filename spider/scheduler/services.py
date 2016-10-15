@@ -6,7 +6,13 @@ class SchedulerService(object):
     @classmethod
     def scheduling_tasks(cls, proj_id: str, links: [], options: []):
         tasks = []
-        clean_links(proj_id, links)
+        links = clean_links(proj_id, links)
+
+        # 为了部分解决锁问题
+        for l in links:
+            redis_client.sadd(proj_id, url_hash(l))
+        print('爬取链接 %s' % str(links))
+
         for link in links:
             task = dict({
                 'proj_id': proj_id,
@@ -20,6 +26,5 @@ class SchedulerService(object):
 
     @classmethod
     def scheduling_task(cls, task):
-        redis_client.sadd(task['proj_id'], task['task_id'])
         from spider.fetcher.tasks import fetch
         fetch.delay(task)

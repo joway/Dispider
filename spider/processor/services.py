@@ -4,6 +4,7 @@ from bs4 import BeautifulSoup
 from lxml import etree
 from lxml.etree import LxmlSyntaxError
 
+from spider.processor.extractor import Extractor
 from utils.constants import ProcessType
 from utils.helpers import extract_valid_links
 
@@ -18,16 +19,25 @@ class ProcessorService(object):
             handler = cls.process_css_select
         elif process_type == ProcessType.JSON:
             handler = cls.process_json
+        elif process_type == ProcessType.AUTO_MATCH:
+            handler = cls.process_auto_match
         else:
             raise Exception
 
         mapping = handler(task['content'], task['rules'])
 
         # 通知 scheduler 进行后续链接爬取
-        valid_links = extract_valid_links(task['content'], task['valid_link_regex'])
-        result = cls.prepare_result(task['proj_id'], task['catalog'], task['domain'], task['task_id'], mapping,
+        valid_links = extract_valid_links(task['content'], task['valid_link_regex'], task['domain'])
+        result = cls.prepare_result(task['proj_id'], task['url'],task['catalog'], task['domain'], task['task_id'], mapping,
                                     valid_links)
         return result
+
+    @classmethod
+    def process_auto_match(cls, content, rules=None):
+        return cls.process_css_select(content, rules={
+            'title': 'title',
+            'content': 'body',
+        })
 
     @classmethod
     def process_css_select(cls, content, rules):
@@ -65,9 +75,10 @@ class ProcessorService(object):
         return mapping
 
     @classmethod
-    def prepare_result(cls, proj_id, catalog, domain, task_id, mapping, valid_links=[]):
+    def prepare_result(cls, proj_id, url, catalog, domain, task_id, mapping, valid_links=[]):
         return {
             'proj_id': proj_id,
+            'url': url,
             'catalog': catalog,
             'domain': domain,
             'task_id': task_id,

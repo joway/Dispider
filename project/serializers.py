@@ -12,7 +12,7 @@ class ProjectOptionsSerializer(serializers.ModelSerializer):
 class ProjectCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
-        fields = ('proj_id', 'name', 'entry_url', 'rules', 'catalog')
+        fields = ('proj_id', 'name', 'entry_url', 'rules', 'catalog', 'process_type')
 
 
 class ProjectCallbackSerializer(serializers.ModelSerializer):

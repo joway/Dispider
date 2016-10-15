@@ -8,3 +8,4 @@ class ProcessType(object):
     XPATH = 2
     JSON = 3
     SITEMAP = 4
+    AUTO_MATCH = 5

@@ -4,6 +4,7 @@
 import requests
 
 from utils.constants import HTTPMethod
+from utils.helpers import is_duplicates_link
 
 
 class FetcherService(object):

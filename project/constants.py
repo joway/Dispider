@@ -35,6 +35,7 @@ PROCESS_TYPE_CHOICES = (
     (ProcessType.CSS_SELECT, 'CSS选择器'),
     (ProcessType.XPATH, 'CSS'),
     (ProcessType.JSON, 'JSON'),
+    (ProcessType.AUTO_MATCH, 'AUTO_MATCH'),
 )
 
 HTTP_METHOD_CHOICES = (

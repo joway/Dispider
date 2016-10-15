@@ -42,10 +42,16 @@ def base62_encode(num: int):
     return ret
 
 
-def extract_valid_links(content, regex):
+def extract_valid_links(content, regex, domain=''):
     html = etree.HTML(content)
-    return [a.attrib['href'] for a in html.xpath('//a[@href]')
-            if re.match(regex, a.attrib['href'])]
+    links = []
+    for a in html.xpath('//a[@href]'):
+        link = a.attrib['href']
+        if link.startswith('/'):
+            link = 'http://' + domain + link
+        if re.match(regex, link):
+            links.append(link)
+    return links
 
 
 def clean_links(proj_id, links: []):
@@ -74,7 +80,7 @@ def init_task_options(task):
     task['payload'] = task.get('payload', {})
     task['process_type'] = task.get('process_type', ProcessType.CSS_SELECT)
     task['valid_link_regex'] = task.get('valid_link_regex',
-                                        r'^(http://)|(https://)(%s)' % get_full_domain(task['url']))
+                                        r'^((http://)|(https://))(%s)' % get_full_domain(task['url']))
     task['headers'] = task.get('headers', {})
     task['cookies'] = task.get('cookies', {})
     task['is_callback'] = task.get('is_callback', False)

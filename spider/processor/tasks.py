@@ -13,7 +13,8 @@ def process(task):
     result = ProcessorService.process(task)
     # 存储任务
     if result['mapping']:
-        pipeline.delay(result)
+        resp = pipeline.delay(result)
+        resp.wait()
 
     if task['is_callback']:
         # callback to server

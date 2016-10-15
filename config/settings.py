@@ -38,6 +38,7 @@ INSTALLED_APPS = [
 
     # local apps
     'project',
+    'article',
 
     # third part apps
     'rest_framework',
