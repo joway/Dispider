@@ -1,37 +1,5 @@
-# Dispider
+# Hack Search
 
-Based on elastic search
+Hack Search is a tech-community-oriented distributed vertical search engine.
 
-## 架构
-
-![Dispider架构图.png](http://ww4.sinaimg.cn/large/72f96cbajw1f79aarhc4yj218s0tsmyx.jpg)
-
-### Web Controller
-
-- Project 信息创建与配置
-- 支持 Nginx 负载均衡
-- 支持 HTTP CALLBACK
-- 支持监控任务
-- 下发调度
-
-### Spider
-
-
-#### Scheduler ( Django Server )
-
-- Redis 存储 links base
-- URL 管理
-
-#### Fetcher
-
-- 下载 (&&渲染) html
-
-#### Processor
-
-- 处理 html
-- 将新链 CALLBACK 回 Server , 等待新一轮调度
-- 调用 Pipeline 持久化结果
-
-#### Pipeline
-
-- 持久化到数据库(elastic search)
+On a contemporary society, various technological article authors build their own technological blogs to share some summary and notes with the society. On the other hand, for searchers, it is hard to find technological contents with certain keywords. Even with Google, good and bad contents might be jumbled together. Therefore, a vertical search engine, i.e., a domain-specified search engine is required for technlogical communities.
