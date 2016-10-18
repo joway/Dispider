@@ -18,8 +18,7 @@ def process(task):
 
     # 存储任务
     if result['mapping']:
-        resp = pipeline.delay(result)
-        resp.wait()
+        pipeline.delay(result)
 
     if task['is_callback']:
         # callback to server
